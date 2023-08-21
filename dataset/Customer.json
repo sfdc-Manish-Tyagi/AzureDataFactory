@@ -1,0 +1,74 @@
+{
+	"name": "Customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CUST_CODE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUST_NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUST_CITY",
+				"type": "char"
+			},
+			{
+				"name": "WORKING_AREA",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUST_COUNTRY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GRADE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OPENING_AMT",
+				"type": "decimal",
+				"precision": 12,
+				"scale": 2
+			},
+			{
+				"name": "RECEIVE_AMT",
+				"type": "decimal",
+				"precision": 12,
+				"scale": 2
+			},
+			{
+				"name": "PAYMENT_AMT",
+				"type": "decimal",
+				"precision": 12,
+				"scale": 2
+			},
+			{
+				"name": "OUTSTANDING_AMT",
+				"type": "decimal",
+				"precision": 12,
+				"scale": 2
+			},
+			{
+				"name": "PHONE_NO",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AGENT_CODE",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CUSTOMER"
+		}
+	}
+}

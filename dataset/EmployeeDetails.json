@@ -1,0 +1,54 @@
+{
+	"name": "EmployeeDetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "EmpID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmpName",
+				"type": "varchar"
+			},
+			{
+				"name": "Mobile",
+				"type": "varchar"
+			},
+			{
+				"name": "PresentAddress",
+				"type": "varchar"
+			},
+			{
+				"name": "Area",
+				"type": "varchar"
+			},
+			{
+				"name": "City",
+				"type": "varchar"
+			},
+			{
+				"name": "Country",
+				"type": "varchar"
+			},
+			{
+				"name": "Qualification",
+				"type": "varchar"
+			},
+			{
+				"name": "Email",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "EmployeeDetails"
+		}
+	}
+}
