@@ -320,7 +320,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SalesforceObject1')]",
+			"name": "[concat(parameters('factoryName'), '/SF_Customer')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -340,7 +340,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SalesforceObject2')]",
+			"name": "[concat(parameters('factoryName'), '/SF_Employee')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -360,7 +360,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SalesforceObject3')]",
+			"name": "[concat(parameters('factoryName'), '/SF_EmployeeDetails')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
