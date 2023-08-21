@@ -1,0 +1,425 @@
+{
+	"name": "SQL_2_SF",
+	"properties": {
+		"activities": [
+			{
+				"name": "SQL_To_SF_Agents",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Agent_Code__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "AGENT_NAME",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AGENT_CODE",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Agent_Code__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "WORKING_AREA",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Working_Area__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "COMMISSION",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								},
+								"sink": {
+									"name": "Commission__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PHONE_NO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Phone_Number__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Country__c",
+									"type": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Agents",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SF_Agents",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SQL_To_SF_Customer",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SQL_To_SF_Agents",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Customer_Code__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CUST_NAME",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CUST_CODE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Customer_Code__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CUST_CITY",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "City__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "WORKING_AREA",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Working_Area__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CUST_COUNTRY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Country__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GRADE",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Grade__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "OPENING_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 12
+								},
+								"sink": {
+									"name": "Opening_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RECEIVE_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 12
+								},
+								"sink": {
+									"name": "Receive_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PAYMENT_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 12
+								},
+								"sink": {
+									"name": "Payment_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTSTANDING_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 12
+								},
+								"sink": {
+									"name": "Outstanding_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PHONE_NO",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Phone_No__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AGENT_CODE",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Agent_Code__r.Agent_Code__c"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Customer",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SF_Customer",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SQL_To_SF_Employee",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Employee_ID__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "EmpName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "EmpID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Employee_ID__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Designation",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Designation__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Department",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Department__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "JoiningDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Joining_Date__c",
+									"type": "DateTime"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Employee",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SF_Employee",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
