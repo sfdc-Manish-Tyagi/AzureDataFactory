@@ -1,0 +1,9 @@
+{
+	"name": "sfdc2sfdcintegration",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ee4fef72-27b7-4fde-b9b1-a4f44200d3c9",
+		"tenantId": "66f8a292-c30a-4459-9def-c5332cf3a047"
+	}
+}
