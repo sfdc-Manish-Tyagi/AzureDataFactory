@@ -1,0 +1,303 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "sfdc2sfdcintegration"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"Salesforce1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Salesforce1'"
+		},
+		"Salesforce1_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'Salesforce1'"
+		},
+		"Salesforce1_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://login.salesforce.com"
+		},
+		"Salesforce1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "ermanishtyagi@gmail.com"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Salesforce1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Salesforce",
+				"typeProperties": {
+					"environmentUrl": "[parameters('Salesforce1_properties_typeProperties_environmentUrl')]",
+					"username": "[parameters('Salesforce1_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Salesforce1_password')]"
+					},
+					"securityToken": {
+						"type": "SecureString",
+						"value": "[parameters('Salesforce1_securityToken')]"
+					},
+					"apiVersion": "58.0"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Agents')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AGENT_CODE",
+						"type": "char"
+					},
+					{
+						"name": "AGENT_NAME",
+						"type": "char"
+					},
+					{
+						"name": "WORKING_AREA",
+						"type": "char"
+					},
+					{
+						"name": "COMMISSION",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "PHONE_NO",
+						"type": "char"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "AGENTS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Customer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "CUST_CODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUST_NAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUST_CITY",
+						"type": "char"
+					},
+					{
+						"name": "WORKING_AREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUST_COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GRADE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OPENING_AMT",
+						"type": "decimal",
+						"precision": 12,
+						"scale": 2
+					},
+					{
+						"name": "RECEIVE_AMT",
+						"type": "decimal",
+						"precision": 12,
+						"scale": 2
+					},
+					{
+						"name": "PAYMENT_AMT",
+						"type": "decimal",
+						"precision": 12,
+						"scale": 2
+					},
+					{
+						"name": "OUTSTANDING_AMT",
+						"type": "decimal",
+						"precision": 12,
+						"scale": 2
+					},
+					{
+						"name": "PHONE_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AGENT_CODE",
+						"type": "char"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "CUSTOMER"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Employee')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "EmpID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpName",
+						"type": "varchar"
+					},
+					{
+						"name": "Designation",
+						"type": "varchar"
+					},
+					{
+						"name": "Department",
+						"type": "varchar"
+					},
+					{
+						"name": "JoiningDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Employee"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EmployeeDetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "EmpID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpName",
+						"type": "varchar"
+					},
+					{
+						"name": "Mobile",
+						"type": "varchar"
+					},
+					{
+						"name": "PresentAddress",
+						"type": "varchar"
+					},
+					{
+						"name": "Area",
+						"type": "varchar"
+					},
+					{
+						"name": "City",
+						"type": "varchar"
+					},
+					{
+						"name": "Country",
+						"type": "varchar"
+					},
+					{
+						"name": "Qualification",
+						"type": "varchar"
+					},
+					{
+						"name": "Email",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "EmployeeDetails"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		}
+	]
+}
